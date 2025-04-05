@@ -1,0 +1,1 @@
+This purchase function will support both, callback function and promise.
