@@ -1,32 +1,19 @@
-// Look at both the commented lines,
-// both are correct try to understand WHY? 
-// Remember these functions return promise object.
-purchase(true)
-    .then((oId) => { return proceedToPayment(oId) })
-    // .then((oId) => proceedToPayment(oId))
-    // .then(proceedToPayment)
-    .then(second)
-    .catch(err => {
-        console.log(err);
-    });
+// This p1 is showing error,
+//  while it's not passed in the Promise.any()
+// Because promises execute immediately when they are created,
+// regardless of whether they are used later or not.
+// To avoid this, you can wrap it in a function or attach .catch
 
+const p1 = new Promise((resolve, reject) => { setTimeout(reject("p1 failed"), 1000) });
 
-function proceedToPayment(orderId) {
-    return new Promise((res, rej) => {
-        if (orderId)
-            res(orderId * 10);
-    });
+const p2 = new Promise((resolve, reject) => { setTimeout(resolve("p2 success"), 1000) });
+
+function p3() {
+    return new Promise((resolve, reject) => setTimeout(resolve("p3 success"), 1000));
 }
 
-function purchase(valid, callback) {
-    const promise = new Promise((resolve, reject) => {
-        if (valid) resolve(11);
-        else reject('Invalid purchase!!!');
-    });
+const promise = p3();
 
-    return promise;
-}
-
-function second(output) {
-    console.log(output);
-};
+Promise.any([p3(), p2])
+    .then((ans) => console.log(ans))
+    .catch((err) => console.log(err));
