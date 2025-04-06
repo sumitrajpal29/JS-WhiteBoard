@@ -9,13 +9,13 @@ const pr = new Promise((resolve, reject) => {
 });
 
 async function hello() {
-    console.log(await pr)
+    console.log(await pr, "from first")
     console.log("First")
 };
 
 function hello2() {
     pr.then(res => {
-        console.log(res);
+        console.log(res, "from second");
     })
     console.log("Second")
 };
