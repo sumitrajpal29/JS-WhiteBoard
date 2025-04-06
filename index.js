@@ -1,24 +1,21 @@
-// See the diff in output of hello and hello2
-// await suspends the function until promise is not resolved
-// run hello, then hello2 and then run both. See the diff.
-
-const pr = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve("Hello World");
-    }, 5000);
+const promise = new Promise((resolve) => {
+    console.log("Promise started");
+    setTimeout(() => resolve("Promise resolved"), 1000);
 });
 
-async function hello() {
-    console.log(await pr, "from first")
-    console.log("First")
-};
+async function withAwait() {
+    console.log("Before await");
+    const result = await promise;
+    console.log("After await:", result);
+}
 
-function hello2() {
-    pr.then(res => {
-        console.log(res, "from second");
-    })
-    console.log("Second")
-};
+function withThen() {
+    console.log("Before then");
+    promise.then((result) => {
+        console.log("Inside then:", result);
+    });
+    console.log("After then");
+}
 
-hello();
-hello2();
+withAwait();
+withThen();
