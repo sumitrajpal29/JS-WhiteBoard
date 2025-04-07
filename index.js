@@ -1,21 +1,31 @@
-const promise = new Promise((resolve) => {
-    console.log("Promise started");
-    setTimeout(() => resolve("Promise resolved"), 1000);
-});
+const URL = "https://fakestoreapi.com/products";
 
-async function withAwait() {
-    console.log("Before await");
-    const result = await promise;
-    console.log("After await:", result);
+async function getUser() {
+    try {
+        const response = await fetch(URL);
+        // because fetch returns a Response object
+        const value = await response.json();
+        console.log(value[8]);
+        console.log("This will be skipped if catch err");
+    }
+    catch (err) {
+        console.log("This is the error:", err);
+    }
 }
 
-function withThen() {
-    console.log("Before then");
-    promise.then((result) => {
-        console.log("Inside then:", result);
-    });
-    console.log("After then");
-}
+getUser()
+// .catch(err => console.log("This is the error:", err));
+// Traditional method
+// Instead of try-catch block we can also attach a .catch to function call,
+//  because the async function returns a Promise object
 
-withAwait();
-withThen();
+
+
+
+
+// This is how it can be done using .then()
+
+fetch(URL)
+    .then((response) => response.json())
+    .then((value) => console.log(value))
+    .catch((error) => console.log(error));
